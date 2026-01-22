@@ -1,21 +1,55 @@
 expenses = []
 
-def add_expense(expenses)
-    loop do
-    puts "Enter Expense Description:"
-    description = gets.chomp
-    puts "Enter Expense Amount:"
-    amount = gets.chomp.to_f
-    puts "What is the category of the expense?"
-    category = gets.chomp
-    expenses << { description: description, amount: amount, category: category }
-    puts "Expense added successfully!"
-    puts "Do you want to add another expense? (y/n)"
-    choice = gets.chomp.downcase    
-    break if choice != 'y'  
+def get_valid_description
+    description = ""
+    while description.strip.empty?
+        puts "Enter expense description:"
+        description = gets.chomp
+
+    if description.strip.empty?
+        puts "Description cannot be empty. Please try again."
     end
 end
 
+description
+end
+
+def get_valid_amount
+    amount = 0
+    while amount <= 0
+        puts "Enter expense amount"
+        amount = gets.chomp.to_f
+
+    if amount <= 0
+            puts "Amount must be greater than zero."
+    end
+end
+
+amount
+end
+
+def get_valid_category
+    category = ""
+    while category.strip.empty?
+        puts "Enter expense category:"
+        category = gets.chomp
+    if category.strip.empty?
+        puts "Category cannot be empty. Please try again."
+    end
+end
+
+category
+end
+
+def add_expense(expenses)
+  description = get_valid_description
+  amount = get_valid_amount
+  category = get_valid_category
+
+  expense = {description: description, amount: amount, category: category}
+  expenses << expense   
+  puts "Expense added successfully!"    
+end
 def list_expenses(expenses)
     if expenses.empty?
         puts "No expenses recorded."
