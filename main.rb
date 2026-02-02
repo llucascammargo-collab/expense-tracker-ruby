@@ -25,7 +25,7 @@ def get_valid_date
     gets.chomp
 end
 
-CATEGORIES = ["Food", "Transport", "Health", "Utilities", "Entertainment", "Bills", "Other"]
+CATEGORIES = ["Food", "Transport", "Health", "Utilities", "Entertainment", "Bills", "Housing","Other"]
 def get_valid_category
   loop do
     puts "Choose a category:"
@@ -55,6 +55,23 @@ def get_valid_category
   end 
 end
 
+PAYMENT = ["Cash", "Credit Card", "Debit Card","Pix"]
+def get_valid_payment_method
+  loop do
+    puts "Choose a payment method:"
+    PAYMENT.each_with_index do |method, index|
+      puts "#{index + 1} - #{method}"
+    end
+
+    option = gets.chomp.to_i
+    if option.between?(1, PAYMENT.length)
+      return PAYMENT[option - 1]
+    else
+      puts "Invalid payment method. Please try again."
+    end
+  end
+end
+
 manager = ExpenseManager.new
 
 loop do
@@ -78,7 +95,8 @@ loop do
     amount = get_valid_amount
     category = get_valid_category
     date = get_valid_date
-    manager.add_expense(description, amount, category, date)
+    payment_method = get_valid_payment_method
+    manager.add_expense(description, amount, category, date, payment_method)
     puts "Expense added successfully!"
 
   when "2"
@@ -91,7 +109,7 @@ loop do
     manager.show_average
 
   when "5"
-    manager.show_category_totals
+    manager.show_category_totals(payment_method: payment_method)
 
   when "6"    
     manager.list_expenses
@@ -110,8 +128,9 @@ loop do
     amount = get_valid_amount
     category = get_valid_category
     date = get_valid_date
+    payment_method = get_valid_payment_method
 
-    manager.edit_expense(index, new_description: description, new_amount: amount, new_category: category, new_date: date)
+    manager.edit_expense(index, new_description: description, new_amount: amount, new_category: category, new_date: date, new_payment_method: payment_method)
         
   when "8"
     puts "Exiting the Expense Tracker. Goodbye!"

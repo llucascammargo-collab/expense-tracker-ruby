@@ -8,8 +8,8 @@ class ExpenseManager
         @expenses = load_expenses
     end
 
-    def add_expense(description, amount, category, date)
-        expense = Expense.new(description, amount, category, date)
+    def add_expense(description, amount, category, date, payment_method)
+        expense = Expense.new(description, amount, category, date, payment_method)
         @expenses << expense
         save_expenses
     end
@@ -19,7 +19,7 @@ class ExpenseManager
       puts "No expenses recorded."
     else
       @expenses.each_with_index do |expense, index|
-            puts "#{index + 1}. #{expense.description} - Category: #{expense.category} - Amount: $#{expense.amount} - Date: #{expense.date}"
+            puts "#{index + 1}. #{expense.description} - Category: #{expense.category} - Amount: $#{expense.amount} - Date: #{expense.date} - Payment Method: #{expense.payment_method}"
           end
        end
     end
@@ -65,7 +65,7 @@ class ExpenseManager
         end
     end
 
-def edit_expense(index, new_description:, new_amount:, new_category:, new_date:)
+def edit_expense(index, new_description:, new_amount:, new_category:, new_date:, new_payment_method:)
   if index >= 0 && index < @expenses.length
     expense = @expenses[index]
 
@@ -73,9 +73,21 @@ def edit_expense(index, new_description:, new_amount:, new_category:, new_date:)
     expense.amount = new_amount
     expense.category = new_category 
     expense.date = new_date
+    expense.payment_method = new_payment_method
 
     save_expenses
     puts "Expense updated successfully."
+  else
+    puts "Invalid expense index."
+  end
+end
+
+def payment_method(index, new_payment_method:)
+  if index >= 0 && index < @expenses.length
+    expense = @expenses[index]
+    expense.payment_method = new_payment_method
+    save_expenses
+    puts "Payment method updated successfully."
   else
     puts "Invalid expense index."
   end
@@ -85,7 +97,7 @@ end
 
   def save_expenses
     data = @expenses.map do |expense|
-      { description: expense.description, amount: expense.amount, category: expense.category, date: expense.date }
+      { description: expense.description, amount: expense.amount, category: expense.category, date: expense.date, payment_method: expense.payment_method }
     end
 
     File.write(FILE_PATH, JSON.pretty_generate(data))
@@ -94,7 +106,7 @@ end
   def load_expenses
     if File.exist?(FILE_PATH)
       JSON.parse(File.read(FILE_PATH), symbolize_names: true).map do |data|
-        Expense.new(data[:description], data[:amount], data[:category], data[:date])
+        Expense.new(data[:description], data[:amount], data[:category], data[:date], data[:payment_method])
       end
     else
       []

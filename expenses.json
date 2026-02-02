@@ -1,0 +1,44 @@
+[
+  {
+    "description": "Mercado",
+    "amount": 200.0,
+    "category": "Food",
+    "date": "111-111-11",
+    "payment_method": "Cash"
+  },
+  {
+    "description": "food[",
+    "amount": 1.0,
+    "category": "Food",
+    "date": "2026-01-05",
+    "payment_method": null
+  },
+  {
+    "description": "Gym",
+    "amount": 119.0,
+    "category": "Health",
+    "date": "2026-01-05",
+    "payment_method": null
+  },
+  {
+    "description": "gym",
+    "amount": 119.0,
+    "category": "Health",
+    "date": "2026-01-25",
+    "payment_method": null
+  },
+  {
+    "description": "mercado",
+    "amount": 2500.0,
+    "category": "Food",
+    "date": "2026-05-30",
+    "payment_method": null
+  },
+  {
+    "description": "cardume",
+    "amount": 1111.0,
+    "category": "Food",
+    "date": "2020-20-20",
+    "payment_method": "Credit Card"
+  }
+]
