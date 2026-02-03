@@ -93,6 +93,43 @@ def payment_method(index, new_payment_method:)
   end
 end
 
+def show_payment_method_totals
+    return puts "No expenses recorded." if @expenses.empty?
+
+    totals = Hash.new(0)
+    @expenses.each do |expense|
+      method = expense.payment_method || "Unknown"
+      totals[method] += expense.amount
+    end
+
+    puts "\nPayment Method Totals:"
+    totals.each do |method, total|  
+      puts "#{method}: $#{total.round(2)}"
+    end
+  end
+
+  def show_biggest_expense
+    return puts "No expenses recorded." if @expenses.empty?
+
+    biggest = @expenses.max_by { |e| e.amount }
+    puts "\nBiggest Expense:"
+    puts "#{biggest.description} - Amount: $#{biggest.amount} - Category: #{biggest.category} - Date: #{biggest.date} - Payment Method: #{biggest.payment_method}"
+  end
+
+  def show_monthly_totals
+    return puts "No expenses recorded." if @expenses.empty?
+    monthly = Hash.new(0)
+    @expenses.each do |expense|
+      month = expense.date[0..6] # Assuming date is in 'YYYY-MM-DD' format
+      monthly[month] += expense.amount
+    end
+
+    puts "\nMonthly Totals:"
+    monthly.each do |month, total|      
+      puts "#{month}: $#{total.round(2)}" 
+    end
+  end
+
   private
 
   def save_expenses

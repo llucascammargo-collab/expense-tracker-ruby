@@ -25,7 +25,11 @@ def get_valid_date
     gets.chomp
 end
 
-CATEGORIES = ["Food", "Transport", "Health", "Utilities", "Entertainment", "Bills", "Housing","Other"]
+def normalize_text(text)
+  text.strip.downcase.capitalize
+end
+
+CATEGORIES = ["Food", "Transport", "Health", "Utilities", "Entertainment", "Bills", "Education", "Other"]
 def get_valid_category
   loop do
     puts "Choose a category:"
@@ -33,27 +37,33 @@ def get_valid_category
       puts "#{index + 1} - #{cat}"
     end
 
-    puts "#{CATEGORIES.length + 1} - Add new category"
+    puts "#{CATEGORIES.length + 1} - Create new category"
 
     option = gets.chomp.to_i
+
     if option.between?(1, CATEGORIES.length)
       return CATEGORIES[option - 1]
     end
 
     if option == CATEGORIES.length + 1
       puts "Enter new category name:"
-      new_category = gets.chomp.strip.capitalize
-      if new_category.empty?
-        puts "Category name cannot be empty."
+      new_category = normalize_text(gets.chomp)
+
+      if CATEGORIES.include?(new_category)
+        puts "Category already exists!"
+      elsif new_category.empty?
+        puts "Invalid name."
       else
         CATEGORIES << new_category
+        puts "Category '#{new_category}' created."
         return new_category
       end
     else
-      puts "Invalid option. Please try again."
+      puts "Invalid option."
     end
-  end 
+  end
 end
+
 
 PAYMENT = ["Cash", "Credit Card", "Debit Card","Pix"]
 def get_valid_payment_method
@@ -84,7 +94,10 @@ loop do
   puts "5 - Show Category totals"
   puts "6 - Remove Expense"
   puts "7 - Edit Expense" 
-  puts "8 - Exit"
+  puts "8 - Show payment method totals"
+  puts "9 - Show biggest expense"
+  puts "10 - Show monthly totals"
+puts "11 - Exit"
 
 
   option = gets.chomp
@@ -132,11 +145,20 @@ loop do
 
     manager.edit_expense(index, new_description: description, new_amount: amount, new_category: category, new_date: date, new_payment_method: payment_method)
         
-  when "8"
-    puts "Exiting the Expense Tracker. Goodbye!"
-    break
+when "8"
+  manager.show_payment_method_totals
 
-  else
+when "9"
+  manager.show_biggest_expense
+
+when "10"
+  manager.show_monthly_totals
+
+when "11"
+  puts "Goodbye!"
+  break
+
+else
     puts "Invalid option. Please try again."
   end
 end
